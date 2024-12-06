@@ -60,7 +60,7 @@ export const useEntityDb = (getDbClient: Function) => {
       const clientInstance = await getDbClient();
       const response = await clientInstance
         .from("Entity")
-        .insert(entities, { onConflict: ["latitude_longitude"] });
+        .insert(entities, { onConflict: ["longitude_latitude"] });
       if (response.error) {
         return { status: response.status, data: response.error.message };
       }
