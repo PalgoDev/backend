@@ -1,6 +1,6 @@
 import { Address, getContract } from "viem";
 import { abi } from "../../abis/UserItems.json";
-import { getPublicClient } from "./viemClient";
+import { getWalletClient } from "./viemClient";
 import memoize from "lodash/memoize";
 
 const addressByChainId = {
@@ -12,6 +12,6 @@ export const getUserItemsContract = memoize(
     getContract({
       abi,
       address: addressByChainId[chainId],
-      client: getPublicClient(chainId),
+      client: getWalletClient(chainId),
     })
 );
