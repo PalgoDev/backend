@@ -43,7 +43,7 @@ export const getNearbyPlacesStorageService = async (
   for (let depth = 0; depth < bfs_depth; depth++) {
     const { latitude, longitude }: any = queue.shift();
 
-    const key = `${latitude},${longitude}`;
+    const key = `${longitude},${latitude}`;
     if (visited.has(key)) continue;
     visited.add(key);
 
@@ -64,7 +64,7 @@ export const getNearbyPlacesStorageService = async (
           places.push({
             place_name: place.place_name,
             address: place.properties?.address,
-            latitude_longitude: placeKey,
+            longitude_latitude: placeKey,
             latitude: place.center[1],
             longitude: place.center[0],
           });

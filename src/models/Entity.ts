@@ -5,7 +5,7 @@ export const EntitySchema = z.object({
   created_at: z.string().optional(),
   latitude: z.number(),
   longitude: z.number(),
-  latitude_longitude: z.string(),
+  longitude_latitude: z.string(),
   place_name: z.string(),
   address: z.string(),
 });
@@ -16,7 +16,7 @@ export const createEntity = (entity: Entity) => {
   return Object.freeze({
     latitude: entity.latitude,
     longitude: entity.longitude,
-    latitude_longitude: entity.latitude_longitude,
+    longitude_latitude: entity.longitude_latitude,
     place_name: entity.place_name,
     address: entity.address,
   });
