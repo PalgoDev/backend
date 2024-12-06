@@ -15,3 +15,4 @@ export const getUserItemsContract = memoize(
       client: getWalletClient(chainId),
     })
 );
+      
