@@ -34,7 +34,9 @@ app.use(
 //                routing
 // ========================================
 import { userRouter } from "../src/routes/User";
+import { mapboxRouter } from "../src/routes/Mapbox";
 app.use("/user", userRouter);
+app.use("/mapbox", mapboxRouter);
 
 // ========================================
 //                health check
