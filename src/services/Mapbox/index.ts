@@ -32,7 +32,7 @@ export const getNearbyPlacesStorageService = async (
   latitude: number,
   longitude: number,
   bfs_depth = 3
-): Promise<Result<User[]>> => {
+): Promise<Result<Entity[]>> => {
   const visited = new Set();
   const queue = [{ latitude, longitude }];
   const places: ReturnType<typeof createEntity>[] = [];
@@ -56,6 +56,7 @@ export const getNearbyPlacesStorageService = async (
     };
 
     try {
+      console.log("Fetching restaurants for: ", key);
       const response = await axios.get(url, { params });
       response.data.features.forEach((place: any) => {
         const placeKey = `${place.center[1]},${place.center[0]}`;
@@ -83,12 +84,7 @@ export const getNearbyPlacesStorageService = async (
   }
 
   // Store in Supabase
-  const response = await useEntityDbClient().insertMultipleEntities(places);
+  const response = await useEntityDbClient.insertMultipleEntities(places);
 
-  if (error) {
-    console.error("Error storing places in Supabase:", error);
-    return { status: 400, data: error };
-  }
-
-  return { status: 200, data: places };
+  return { status: 200, data: response.data };
 };

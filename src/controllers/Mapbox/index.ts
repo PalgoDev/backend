@@ -1,5 +1,8 @@
-import { Result, createUser, User } from "../../models";
-import { getNearbyPlacesService } from "../../services/Mapbox";
+import { Result, createEntity, Entity } from "../../models";
+import {
+  getNearbyPlacesService,
+  getNearbyPlacesStorageService,
+} from "../../services/Mapbox";
 import { Request } from "express";
 
 import dotenv from "dotenv";
@@ -20,15 +23,22 @@ export const getNearbyPlacesController = async (
       throw new Error("No/Invalid longitude found. longitude: " + longitude);
     }
 
-    // TODO: remove this
-    // TODO: check if auth needed for getting blocks
-    // const typeOfAuthorization = req.headers.authorization?.split(" ")[0];
-    // const accessToken = req.headers.authorization?.split(" ")[1];
-    // if (!(typeOfAuthorization && accessToken)) {
-    //   return { status: 400, data: "No access token found" };
-    // }
-
     return await getNearbyPlacesService(latitude, longitude);
+  } catch (e: any) {
+    return { status: 400, data: e };
+  }
+};
+
+export const createMultipleEntitiesController = async (
+  req: Request
+): Promise<Result<Entity[] | string>> => {
+  try {
+    let input = req.body;
+    return await getNearbyPlacesStorageService(
+      parseFloat(input.latitude),
+      parseFloat(input.longitude),
+      parseInt(input.bfs_depth)
+    );
   } catch (e: any) {
     return { status: 400, data: e };
   }
