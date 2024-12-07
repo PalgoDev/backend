@@ -33,6 +33,8 @@ export const getContractDataController = async (
       req.query.chainId as any
     );
   } catch (e: any) {
+    console.log(e);
+    console.log("HERE");
     return { status: 400, data: e };
   }
 };

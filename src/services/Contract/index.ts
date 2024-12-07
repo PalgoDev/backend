@@ -32,6 +32,7 @@ export async function getContractData(
 ): Promise<Result<any[]>> {
   const user: any = await useUserDbClient.findById(user_id);
   if (!user || user.status !== 200) {
+    console.log("USER NOT FOUND");
     return { status: 400, data: "User not found" };
   }
   const user_wallet_address = user.data[0].wallet_address;

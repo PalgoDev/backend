@@ -1,6 +1,6 @@
 import { Address } from "viem";
 import { getUserItemsContract } from "./contract";
-import { ChainId, USER_ITEM } from "config";
+import { ChainId, USER_ITEM } from "../../config";
 import { getPublicClient } from "./viemClient";
 
 export const getUserInfo = async (address: Address, chainId: ChainId) => {
@@ -10,7 +10,7 @@ export const getUserInfo = async (address: Address, chainId: ChainId) => {
     ...contract,
     functionName: "balanceOf",
   };
-  console.log("PARAMS: ", address, chainId);
+  // console.log("PARAMS: ", USER_ITEM);
   const [cash, health, attack, defense, potion, superPotion] =
     await getPublicClient(chainId).multicall({
       contracts: [
@@ -40,20 +40,20 @@ export const getUserInfo = async (address: Address, chainId: ChainId) => {
         },
       ],
     });
-  // console.log("ANS: ", { cash, health, attack, defense, potion, superPotion });
+  console.log("ANS: ", { cash, health, attack, defense, potion, superPotion });
 
   if (
-    !cash.result ||
-    !health.result ||
-    !attack.result ||
-    !defense.result ||
-    !potion.result ||
-    !superPotion.result
+    cash.status != "success" ||
+    health.status != "success" ||
+    attack.status != "success" ||
+    defense.status != "success" ||
+    potion.status != "success" ||
+    superPotion.status != "success"
   ) {
     return {
       status: 404,
       data: {
-        message: "User not found",
+        message: "Contract data is corrupt",
       },
     };
   }
