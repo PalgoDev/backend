@@ -1,10 +1,41 @@
+import { USER_ITEM } from "../../config";
 import { User, Result } from "../../models";
 import { useUserDbClient } from "../../utils/database";
+import {
+  mintTokensForUserService,
+  burnTokensForUserService,
+} from "../Contract";
+import { parseEther } from "viem";
 
 export const createUserService = async (
   user: Pick<User, Exclude<keyof User, "id">>
 ): Promise<Result<User[]>> => {
-  const response = await useUserDbClient.insertUser(user);
+  const response: any = await useUserDbClient.insertUser(user);
+  const userRes = response.data[0];
+  await mintTokensForUserService(
+    userRes.id as string,
+    137,
+    USER_ITEM.HEALTH,
+    userRes.health
+  );
+  await mintTokensForUserService(
+    userRes.id as string,
+    137,
+    USER_ITEM.ATTACK,
+    userRes.attack
+  );
+  await mintTokensForUserService(
+    userRes.id as string,
+    137,
+    USER_ITEM.DEFENSE,
+    userRes.defense
+  );
+  await mintTokensForUserService(
+    userRes.id as string,
+    137,
+    USER_ITEM.CASH,
+    parseEther("100").toString()
+  );
   return { status: response.status, data: response.data };
 };
 

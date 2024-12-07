@@ -26,6 +26,7 @@ export const getNearbyPlacesToCordinateController = async (
 
     return await getNearbyPlacesToCordinateService(longitude, latitude, limit);
   } catch (e: any) {
+    console.log(e);
     return { status: 400, data: e };
   }
 };
@@ -52,6 +53,7 @@ export const getNearbyPlacesIndividuallyToCordinateController = async (
       limit
     );
   } catch (e: any) {
+    console.log(e);
     return { status: 400, data: e };
   }
 };

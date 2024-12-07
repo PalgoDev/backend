@@ -1,7 +1,7 @@
 import { User, Result } from "../../models";
 import { useUserDbClient } from "../../utils/database";
 import { burnTokens, mintTokens } from "../../utils/contract";
-import { ChainId } from "config";
+import { ChainId } from "../../config";
 import { Address } from "viem";
 import { getUserInfo } from "../../utils/contract/read";
 
@@ -13,6 +13,7 @@ export async function mintTokensForUserService(
 ): Promise<Result<any[]>> {
   const user: any = await useUserDbClient.findById(user_id);
   if (!user || user.status !== 200) {
+    console.log("USER NOT FOUND");
     return { status: 400, data: "User not found" };
   }
 
@@ -48,6 +49,7 @@ export async function burnTokensForUserService(
 ): Promise<Result<any[]>> {
   const user: any = await useUserDbClient.findById(user_id);
   if (!user || user.status !== 200) {
+    console.log("USER NOT FOUND");
     return { status: 400, data: "User not found" };
   }
 

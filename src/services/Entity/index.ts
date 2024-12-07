@@ -16,6 +16,7 @@ export const getNearbyPlacesToCordinateService = async (
 
     return { status: 200, data: response.data };
   } catch (e: any) {
+    console.log(e);
     return { status: 400, data: e.message };
   }
 };
@@ -54,6 +55,7 @@ export const getNearbyPlacesIndividuallyToCordinateService = async (
 
     return { status: 200, data: response.data };
   } catch (e: any) {
+    console.log(e);
     return { status: 400, data: e.message };
   }
 };

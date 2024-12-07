@@ -5,7 +5,7 @@ import {
   mintTokensForUserService,
   burnTokensForUserService,
 } from "../Contract";
-import { USER_ITEM } from "config";
+import { USER_ITEM } from "../../config";
 import { min } from "lodash";
 import { parseEther } from "viem";
 import { mint } from "viem/chains";
