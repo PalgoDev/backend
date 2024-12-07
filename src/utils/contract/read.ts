@@ -42,11 +42,7 @@ export const getUserInfo = async (address: Address, chainId: ChainId) => {
     });
 
   return {
-    cash,
-    health,
-    attack,
-    defense,
-    potion,
-    superPotion,
+    status: 200,
+    data: { cash, health, attack, defense, potion, superPotion },
   };
 };

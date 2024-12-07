@@ -12,7 +12,7 @@ const chainById = {
 export const getPublicClient = memoize((chainId: keyof typeof chainById) => {
   const client = createPublicClient({
     chain: chainById[chainId],
-    transport: http(),
+    transport: http("https://polygon.llamarpc.com"),
   });
   return client;
 });
@@ -23,7 +23,7 @@ export const getWalletClient = memoize((chainId: keyof typeof chainById) => {
   );
   const client = createWalletClient({
     chain: chainById[chainId],
-    transport: http(),
+    transport: http("https://polygon.llamarpc.com"),
     account,
   });
   return client;

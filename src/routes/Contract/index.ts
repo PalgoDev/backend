@@ -2,6 +2,7 @@ import { makeCallback } from "../../utils";
 import {
   mintTokensForUserController,
   getTokenBalanceForUserController,
+  getContractDataController,
 } from "../../controllers/Contract";
 
 import express from "express";
@@ -15,4 +16,9 @@ contractRouter.post(
 contractRouter.get(
   "/:token_id",
   makeCallback(getTokenBalanceForUserController)
+);
+
+contractRouter.get(
+  "/contractData/:user_id/:chainId",
+  makeCallback(getContractDataController)
 );
