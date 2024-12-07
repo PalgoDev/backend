@@ -1,4 +1,4 @@
-// import { getUserItemsContract } from "./contract";
+import { getUserItemsContract } from "./contract";
 import { ChainId } from "../../config";
 import { Address } from "viem";
 import { createPublicClient, createWalletClient, Hex, http } from "viem";
@@ -12,9 +12,21 @@ export const mintTokens = async (
   tokenId: number,
   amount: number
 ) => {
-  // const contract = getUserItemsContract(chainId);
-  // const hash = await contract.write.mint([account, tokenId, amount, ""]);
-  return "hash";
+  //   const walletClient = getWalletClient(chainId);
+  //   const hash = await walletClient.writeContract({
+  //     abi,
+  //     address: addressByChainId[chainId],
+  //     functionName: "mint",
+  //     args: [account, tokenId, amount, ""],
+  //   });
+
+  const hash = await getUserItemsContract(chainId).write.mint([
+    account,
+    tokenId,
+    amount,
+    "",
+  ]);
+  return hash;
 };
 
 // export const burnTokens = async (
