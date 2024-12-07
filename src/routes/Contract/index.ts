@@ -4,6 +4,7 @@ import {
   getContractDataController,
   mintClaimOrbController,
   burnTokensForUserController,
+  mintClaimPotionController,
 } from "../../controllers/Contract";
 
 import express from "express";
@@ -27,3 +28,4 @@ contractRouter.post(
 contractRouter.get("/contractData", makeCallback(getContractDataController));
 
 contractRouter.post("/mint/ClaimOrb", makeCallback(mintClaimOrbController));
+contractRouter.post("/mint/claimPotion", makeCallback(mintClaimPotionController));

@@ -9,6 +9,7 @@ import { Request } from "express";
 
 import dotenv from "dotenv";
 import { parseEther } from "viem";
+import { USER_ITEM } from "config";
 dotenv.config();
 
 export const mintTokensForUserController = async (
@@ -81,6 +82,30 @@ export const mintClaimOrbController = async (
     await mintTokensForUserService(user.data[0].id, input.chainId, 2, 3);
     await mintTokensForUserService(user.data[0].id, input.chainId, 3, 1);
     return { status: 200, data: "Tokens minted" };
+  } catch (e: any) {
+    console.log(e);
+    return { status: 400, data: e };
+  }
+};
+
+export const mintClaimPotionController = async (
+  req: Request
+): Promise<Result<any[] | string>> => {
+  try {
+    const input = req.body;
+    const user: any = await getUsersFromParamsService({ email: input.email });
+    if (!user || user.status !== 200) {
+      console.log("USER NOT FOUND");
+      return { status: 400, data: "User not found" };
+    }
+    await mintTokensForUserService(
+      user.data[0].id,
+      input.chainId,
+      USER_ITEM.POTION,
+      1
+    );
+
+    return { status: 200, data: "Potions minted" };
   } catch (e: any) {
     console.log(e);
     return { status: 400, data: e };
