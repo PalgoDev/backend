@@ -46,3 +46,10 @@ export const getLeaderBoardByEmailService = async (
   const response = await useLeaderBoardDbClient.getLeaderBoardsFromEmail(email);
   return { status: response.status, data: response.data };
 };
+
+export const getTopNRanksService = async (
+  limit: number
+): Promise<Result<LeaderBoard[]>> => {
+  const response = await useLeaderBoardDbClient.getTopNRanks(limit);
+  return { status: response.status, data: response.data };
+};

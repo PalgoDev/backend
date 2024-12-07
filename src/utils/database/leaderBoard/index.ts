@@ -116,6 +116,27 @@ export const useLeaderBoardDb = (getDbClient: Function) => {
     }
   }
 
+  async function getTopNRanks(limit: number): Promise<Result<LeaderBoard[]>> {
+    try {
+      const clientInstance = await getDbClient();
+      const response = await clientInstance
+        .from("LeaderBoard")
+        .select()
+        .order("wins", { ascending: false })
+        .limit(limit);
+      if (response.error) {
+        return { status: response.status, data: response.error.message };
+      }
+      if (response.data.length === 0) {
+        return { status: 404, data: "LeaderBoards not Found" };
+      }
+      return response;
+    } catch (e: any) {
+      console.log(e);
+      return { status: 400, data: e.message };
+    }
+  }
+
   return Object.freeze({
     getAll,
     findById,
@@ -123,5 +144,6 @@ export const useLeaderBoardDb = (getDbClient: Function) => {
     updateLeaderBoard,
     getLeaderBoardsFromParams,
     getLeaderBoardsFromEmail,
+    getTopNRanks,
   });
 };

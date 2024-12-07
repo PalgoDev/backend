@@ -5,6 +5,7 @@ import {
   getAllLeaderBoardController,
   getLeaderBoardsFromParamsController,
   updateLeaderBoardController,
+  getTopNRanksController,
 } from "../../controllers/LeaderBoard";
 
 import express from "express";
@@ -22,3 +23,5 @@ leaderBoardRouter.get(
   "/search/params",
   makeCallback(getLeaderBoardsFromParamsController)
 );
+
+leaderBoardRouter.get("/top/:limit", makeCallback(getTopNRanksController));

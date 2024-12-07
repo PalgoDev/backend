@@ -5,7 +5,7 @@ import {
   getLeaderBoardService,
   updateLeaderBoardService,
   getLeaderBoardsFromParamsService,
-  getLeaderBoardByEmailService,
+  getTopNRanksService,
 } from "../../services/LeaderBoard";
 import { Request } from "express";
 
@@ -77,6 +77,18 @@ export const getLeaderBoardsFromParamsController = async (
   try {
     let input = req.query;
     return await getLeaderBoardsFromParamsService(input);
+  } catch (e: any) {
+    console.log(e);
+    return { status: 400, data: e };
+  }
+};
+
+export const getTopNRanksController = async (
+  req: Request
+): Promise<Result<LeaderBoard[] | string>> => {
+  try {
+    let input: any = req.query;
+    return await getTopNRanksService(input.limit);
   } catch (e: any) {
     console.log(e);
     return { status: 400, data: e };
