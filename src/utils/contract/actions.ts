@@ -8,9 +8,9 @@ export const mintTokens = async (
   tokenId: number,
   amount: number
 ) => {
-  const contract = getUserItemsContract(chainId);
-  const hash = await contract.write.mint([account, tokenId, amount, ""]);
-  return hash;
+  // const contract = getUserItemsContract(chainId);
+  // const hash = await contract.write.mint([account, tokenId, amount, ""]);
+  return "hash";
 };
 
 export const burnTokens = async (
@@ -19,7 +19,7 @@ export const burnTokens = async (
   tokenId: number,
   amount: number
 ) => {
-  const contract = getUserItemsContract(chainId);
-  const hash = await contract.write.burn([account, tokenId, amount]);
-  return hash;
+  // const contract = getUserItemsContract(chainId);
+  // const hash = await contract.write.burn([account, tokenId, amount]);
+  return "hash";
 };

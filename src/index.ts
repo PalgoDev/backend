@@ -37,10 +37,12 @@ import { userRouter } from "../src/routes/User";
 import { mapboxRouter } from "../src/routes/Mapbox";
 import { entityRouter } from "../src/routes/Entity";
 import { gameRouter } from "../src/routes/Game";
+import { contractRouter } from "../src/routes/Contract";
 app.use("/user", userRouter);
 app.use("/mapbox", mapboxRouter);
 app.use("/entity", entityRouter);
 app.use("/game", gameRouter);
+app.use("/contract", contractRouter);
 
 // ========================================
 //                health check
