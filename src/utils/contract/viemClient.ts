@@ -12,7 +12,9 @@ const chainById = {
 export const getPublicClient = memoize((chainId: keyof typeof chainById) => {
   const client = createPublicClient({
     chain: chainById[chainId],
-    transport: http("https://polygon.llamarpc.com"),
+    transport: http(
+      "https://polygon-mainnet.g.alchemy.com/v2/AF2A5lTVs_Uh_Zkk-BF-n91QH5F1FH47"
+    ),
   });
   return client;
 });
@@ -23,7 +25,9 @@ export const getWalletClient = memoize((chainId: keyof typeof chainById) => {
   );
   const client = createWalletClient({
     chain: chainById[chainId],
-    transport: http("https://polygon.llamarpc.com"),
+    transport: http(
+      "https://polygon-mainnet.g.alchemy.com/v2/AF2A5lTVs_Uh_Zkk-BF-n91QH5F1FH47"
+    ),
     account,
   });
   return client;

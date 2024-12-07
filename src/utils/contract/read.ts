@@ -40,7 +40,7 @@ export const getUserInfo = async (address: Address, chainId: ChainId) => {
         },
       ],
     });
-
+  console.log("ANS: ", { cash, health, attack, defense, potion, superPotion });
   return {
     status: 200,
     data: { cash, health, attack, defense, potion, superPotion },
