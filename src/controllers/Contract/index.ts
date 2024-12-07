@@ -9,7 +9,7 @@ import { Request } from "express";
 
 import dotenv from "dotenv";
 import { parseEther } from "viem";
-import { USER_ITEM } from "config";
+import { USER_ITEM } from "../../config";
 dotenv.config();
 
 export const mintTokensForUserController = async (

@@ -27,5 +27,9 @@ contractRouter.post(
 
 contractRouter.get("/contractData", makeCallback(getContractDataController));
 
-contractRouter.post("/mint/ClaimOrb", makeCallback(mintClaimOrbController));
-contractRouter.post("/mint/claimPotion", makeCallback(mintClaimPotionController));
+contractRouter.post("/mint/claimOrb", makeCallback(mintClaimOrbController));
+
+contractRouter.post(
+  "/mint/claimPotion",
+  makeCallback(mintClaimPotionController)
+);
