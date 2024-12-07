@@ -111,3 +111,48 @@ export const mintClaimPotionController = async (
     return { status: 400, data: e };
   }
 };
+
+export const mintUsePotionController = async (
+  req: Request
+): Promise<Result<any[] | string>> => {
+  try {
+    const input = req.body;
+    const user: any = await getUsersFromParamsService({ email: input.email });
+    if (!user || user.status !== 200) {
+      console.log("USER NOT FOUND");
+      return { status: 400, data: "User not found" };
+    }
+    if (input.is_super_potion) {
+      await burnTokensForUserService(
+        user.data[0].id,
+        input.chainId,
+        USER_ITEM.SUPER_POTION,
+        1
+      );
+      await mintTokensForUserService(
+        user.data[0].id,
+        input.chainId,
+        USER_ITEM.HEALTH,
+        50
+      );
+    } else {
+      await burnTokensForUserService(
+        user.data[0].id,
+        input.chainId,
+        USER_ITEM.POTION,
+        1
+      );
+      await mintTokensForUserService(
+        user.data[0].id,
+        input.chainId,
+        USER_ITEM.HEALTH,
+        20
+      );
+    }
+
+    return { status: 200, data: "Potions used" };
+  } catch (e: any) {
+    console.log(e);
+    return { status: 400, data: e };
+  }
+};

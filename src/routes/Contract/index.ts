@@ -5,6 +5,7 @@ import {
   mintClaimOrbController,
   burnTokensForUserController,
   mintClaimPotionController,
+  mintUsePotionController,
 } from "../../controllers/Contract";
 
 import express from "express";
@@ -33,3 +34,5 @@ contractRouter.post(
   "/mint/claimPotion",
   makeCallback(mintClaimPotionController)
 );
+
+contractRouter.post("/mint/usePotion", makeCallback(mintUsePotionController));
