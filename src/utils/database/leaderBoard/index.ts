@@ -40,12 +40,9 @@ export const useLeaderBoardDb = (getDbClient: Function) => {
   ): Promise<Result<LeaderBoard[]>> {
     try {
       const clientInstance = await getDbClient();
-      const health = Math.floor(Math.random() * (150 - 100 + 1)) + 100;
-      const attack = Math.floor(Math.random() * (15 - 10 + 1)) + 10;
-      const defense = Math.floor(Math.random() * (7 - 5 + 1)) + 5;
       const response = await clientInstance
         .from("LeaderBoard")
-        .insert({ ...leaderBoard, attack, defense, health })
+        .insert(leaderBoard)
         .select();
       if (response.error) {
         return { status: response.status, data: response.error.message };
@@ -63,7 +60,7 @@ export const useLeaderBoardDb = (getDbClient: Function) => {
     try {
       const clientInstance = await getDbClient();
       const response = await clientInstance
-        .from("LeaderBoards")
+        .from("LeaderBoard")
         .update(leaderBoard)
         .match({ id: leaderBoard.id })
         .select();
@@ -83,7 +80,7 @@ export const useLeaderBoardDb = (getDbClient: Function) => {
     try {
       const clientInstance = await getDbClient();
       const response = await clientInstance
-        .from("LeaderBoards")
+        .from("LeaderBoard")
         .select()
         .match(searchParams);
       if (response.error) {
@@ -103,7 +100,7 @@ export const useLeaderBoardDb = (getDbClient: Function) => {
     try {
       const clientInstance = await getDbClient();
       const response = await clientInstance
-        .from("LeaderBoards")
+        .from("LeaderBoard")
         .select()
         .match({ email: email });
       if (response.error) {
