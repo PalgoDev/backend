@@ -1,6 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { useUserDb } from "./user";
 import { useEntityDb } from "./entity";
+import { useGameDb } from "./game";
 
 import dotenv from "dotenv";
 dotenv.config();
@@ -18,3 +19,4 @@ export const createDbClient = () => {
 
 export const useUserDbClient = useUserDb(createDbClient);
 export const useEntityDbClient = useEntityDb(createDbClient);
+export const useGameDbClient = useGameDb(createDbClient);
