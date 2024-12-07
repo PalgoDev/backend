@@ -9,6 +9,10 @@ import { USER_ITEM } from "../../config";
 import { min } from "lodash";
 import { parseEther } from "viem";
 import { mint } from "viem/chains";
+import {
+  getLeaderBoardsFromParamsService,
+  updateLeaderBoardService,
+} from "../LeaderBoard";
 
 export const createGameService = async (
   game: Pick<Game, Exclude<keyof Game, "id">>
@@ -121,11 +125,26 @@ export const simulateGameService = async (
     player2.health - gameResponse.data.finalHealths.player2
   );
 
+  const leaderBoard1 = await getLeaderBoardsFromParamsService({
+    email: response.data[0].player1.email,
+  });
+  const leaderBoard2 = await getLeaderBoardsFromParamsService({
+    email: response.data[0].player2.email,
+  });
+
   //update the user
   if (gameResponse.data.result === 1) {
     await updateUserService({
       ...response.data[0].player1,
       attack: player_1_attack + 1,
+    });
+    await updateLeaderBoardService({
+      ...leaderBoard1.data[0],
+      wins: leaderBoard1.data[0].wins + 1,
+    });
+    await updateLeaderBoardService({
+      ...leaderBoard2.data[0],
+      losses: leaderBoard2.data[0].losses + 1,
     });
     await mintTokensForUserService(
       response.data[0].player1.id,
@@ -143,6 +162,14 @@ export const simulateGameService = async (
     await updateUserService({
       ...response.data[0].player2,
       attack: player_2_attack + 1,
+    });
+    await updateLeaderBoardService({
+      ...leaderBoard2.data[0],
+      wins: leaderBoard2.data[0].wins + 1,
+    });
+    await updateLeaderBoardService({
+      ...leaderBoard1.data[0],
+      losses: leaderBoard1.data[0].losses + 1,
     });
     await mintTokensForUserService(
       response.data[0].player2.id,
