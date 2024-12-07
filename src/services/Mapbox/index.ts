@@ -20,7 +20,16 @@ export const getNearbyPlacesService = async (
 
   try {
     const response = await axios.get(url, { params });
-    return { status: 200, data: response.data.features };
+    const entities = response.data.features.map((place: any) => {
+      return {
+        place_name: place.place_name,
+        address: place.properties?.address,
+        longitude_latitude: `${place.center[0]},${place.center[1]}`,
+        latitude: place.center[1],
+        longitude: place.center[0],
+      };
+    });
+    return { status: 200, data: entities };
   } catch (error) {
     console.error("Error fetching restaurants:", error);
     return { status: 400, data: error };

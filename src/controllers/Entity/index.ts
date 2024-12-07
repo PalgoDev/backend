@@ -9,8 +9,8 @@ export const getNearbyPlacesToCordinateController = async (
   req: Request
 ): Promise<Result<any[] | string>> => {
   try {
-    const latitude: number = parseInt(req.query?.latitude as string);
-    const longitude: number = parseInt(req.query?.longitude as string);
+    const latitude: number = parseFloat(req.query?.latitude as string);
+    const longitude: number = parseFloat(req.query?.longitude as string);
     const limit: number = parseInt(req.query?.limit as string) || 10;
 
     if (!latitude || isNaN(+latitude)) {
