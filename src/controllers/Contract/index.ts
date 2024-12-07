@@ -2,6 +2,7 @@ import { Result, createUser, User } from "../../models";
 import {
   mintTokensForUserService,
   getContractData,
+  burnTokensForUserService,
 } from "../../services/Contract";
 import { getUsersFromParamsService } from "../../services/User";
 import { Request } from "express";
@@ -16,6 +17,22 @@ export const mintTokensForUserController = async (
   try {
     const input = req.body;
     return await mintTokensForUserService(
+      input.user_id,
+      input.chainId,
+      input.tokenId,
+      input.amount
+    );
+  } catch (e: any) {
+    return { status: 400, data: e };
+  }
+};
+
+export const burnTokensForUserController = async (
+  req: Request
+): Promise<Result<any[] | string>> => {
+  try {
+    const input = req.body;
+    return await burnTokensForUserService(
       input.user_id,
       input.chainId,
       input.tokenId,

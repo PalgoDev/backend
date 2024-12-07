@@ -22,7 +22,7 @@ export const burnTokens = async (
   chainId: ChainId,
   account: Address,
   tokenId: number,
-  amount: number
+  amount: number | string
 ) => {
   const contract = getUserItemsContract(chainId);
   const hash = await contract.write.burn([account, tokenId, amount]);
