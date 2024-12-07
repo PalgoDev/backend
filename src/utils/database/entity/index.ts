@@ -81,28 +81,6 @@ export const useEntityDb = (getDbClient: Function) => {
     }
   }
 
-  //   async function getClosestEntities(
-  //     longitude: number,
-  //     latitude: number,
-  //     limit: number
-  //   ): Promise<Result<Entity[]>> {
-  //     try {
-  //       const clientInstance = await getDbClient();
-  //       const response = await clientInstance.rpc("get_closest_entities", {
-  //         lon: longitude,
-  //         lat: latitude,
-  //         lim: limit,
-  //       });
-
-  //       if (response.error) {
-  //         return { status: response.status, data: response.error.message };
-  //       }
-  //       return { status: 200, data: response.data };
-  //     } catch (e: any) {
-  //       return { status: 400, data: e.message };
-  //     }
-  //   }
-
   async function getClosestEntities(
     longitude: number,
     latitude: number,
@@ -110,33 +88,61 @@ export const useEntityDb = (getDbClient: Function) => {
   ): Promise<Result<Entity[]>> {
     try {
       const clientInstance = await getDbClient();
-
-      // Fetch all entities
-      const response = await clientInstance.from("Entity").select("*");
+      const response = await clientInstance.rpc("get_closest_entities", {
+        lon: longitude,
+        lat: latitude,
+        lim: limit,
+      });
 
       if (response.error) {
         return { status: response.status, data: response.error.message };
       }
-
-      const entities = response.data;
-
-      // Calculate the distance for each entity
-      const entitiesWithDistance = entities.map((entity: Entity) => ({
-        ...entity,
-        distance: Math.sqrt(
-          Math.pow(entity.latitude - latitude, 2) +
-            Math.pow(entity.longitude - longitude, 2)
-        ),
-      }));
-
-      // Sort by distance and limit the results
-      entitiesWithDistance.sort((a, b) => a.distance - b.distance);
-
-      return { status: 200, data: entitiesWithDistance.slice(0, limit) };
+      return { status: 200, data: response.data };
     } catch (e: any) {
       return { status: 400, data: e.message };
     }
   }
+
+  //   async function getClosestEntities(
+  //     longitude: number,
+  //     latitude: number,
+  //     limit: number
+  //   ): Promise<Result<Entity[]>> {
+  //     try {
+  //       const clientInstance = await getDbClient();
+
+  //       // Fetch all entities
+  //       const response = await clientInstance.from("Entity").select("*");
+
+  //       if (response.error) {
+  //         return { status: response.status, data: response.error.message };
+  //       }
+
+  //       const entities = response.data;
+
+  //       // Calculate the distance for each entity
+  //       const entitiesWithDistance = entities.map((entity: Entity) => ({
+  //         ...entity,
+  //         distance: Math.sqrt(
+  //           Math.pow(entity.latitude - latitude, 2) +
+  //             Math.pow(entity.longitude - longitude, 2)
+  //         ),
+  //         delta_latitude: entity.latitude - latitude,
+  //         delta_longitude: entity.longitude - longitude,
+  //         latitude,
+  //         longitude,
+  //         entity_latitude: entity.latitude,
+  //         entity_longitude: entity.longitude,
+  //       }));
+
+  //       // Sort by distance and limit the results
+  //       entitiesWithDistance.sort((a, b) => a.distance - b.distance);
+
+  //       return { status: 200, data: entitiesWithDistance.slice(0, limit) };
+  //     } catch (e: any) {
+  //       return { status: 400, data: e.message };
+  //     }
+  //   }
 
   return Object.freeze({
     getAll,

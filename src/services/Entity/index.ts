@@ -3,14 +3,14 @@ import { Entity, createEntity, Result } from "../../models";
 import { useEntityDbClient } from "../../utils/database";
 
 export const getNearbyPlacesToCordinateService = async (
-  latitude: number,
-  longitude: number,
+  longitude,
+  latitude,
   limit = 10
 ): Promise<Result<Entity[]>> => {
   try {
     const response = await useEntityDbClient.getClosestEntities(
-      longitude,
-      latitude,
+      parseFloat(longitude),
+      parseFloat(latitude),
       limit
     );
 
