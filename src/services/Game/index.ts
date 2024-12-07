@@ -1,5 +1,6 @@
 import { Game, Result } from "../../models";
 import { useGameDbClient } from "../../utils/database";
+import { updateUserService } from "../User";
 
 export const createGameService = async (
   game: Pick<Game, Exclude<keyof Game, "id">>
@@ -15,5 +16,100 @@ export const getGameService = async (id: string): Promise<Result<Game[]>> => {
 
 export const getAllGameService = async (): Promise<Result<Game[]>> => {
   const response = await useGameDbClient.getAll();
+  return { status: response.status, data: response.data };
+};
+
+const simulate_fight = (player1, player2) => {
+  const damageToP2 = Math.max(player1.attack - player2.defense, 0);
+  const damageToP1 = Math.max(player2.attack - player1.defense, 0);
+  const damages: number[] = [];
+
+  let p1Health = player1.health;
+  let p2Health = player2.health;
+
+  while (p1Health > 0 && p2Health > 0) {
+    // Player 1 attacks Player 2
+    if (p2Health > 0) {
+      damages.push(damageToP2);
+      p2Health -= damageToP2;
+    }
+
+    // Player 2 attacks Player 1
+    if (p1Health > 0 && p2Health > 0) {
+      // Check if both are still alive
+      damages.push(damageToP1);
+      p1Health -= damageToP1;
+    }
+  }
+
+  // Determine the result
+  let result: number = 0;
+  if (p1Health > 0 && p2Health <= 0) {
+    result = 1;
+  } else if (p2Health > 0 && p1Health <= 0) {
+    result = 2;
+  } else {
+    result = 3;
+  }
+
+  return { data: { damages, result } };
+};
+
+export const simulateGameService = async (
+  id: string
+): Promise<Result<any[]>> => {
+  const response: any = await useGameDbClient.findDetailGameInfoById(id);
+  if (response.status === 404) {
+    return { status: 404, data: "Game not Found" };
+  }
+
+  const player_1_attack = response.data[0].player1.attack;
+  const player_1_defense = response.data[0].player1.defense;
+  const player_1_health = response.data[0].player1.health;
+  const player_2_attack = response.data[0].player2.attack;
+  const player_2_defense = response.data[0].player2.defense;
+  const player_2_health = response.data[0].player2.health;
+
+  const player1 = {
+    attack: player_1_attack,
+    defense: player_1_defense,
+    health: player_1_health,
+  };
+  const player2 = {
+    attack: player_2_attack,
+    defense: player_2_defense,
+    health: player_2_health,
+  };
+  const gameResponse = simulate_fight(player1, player2);
+  //update the user
+  if (gameResponse.data.result === 1) {
+    await updateUserService({
+      ...response.data[0].player1,
+      attack: player_1_attack + 1,
+    });
+  } else if (gameResponse.data.result === 2) {
+    await updateUserService({
+      ...response.data[0].player2,
+      attack: player_2_attack + 1,
+    });
+  }
+
+  //update the game
+  await updateGameService({
+    id: parseInt(id),
+    player_1_id: response.data[0].player1.id,
+    player_2_id: response.data[0].player2.id,
+    remarks: response.data[0].remarks,
+    result: gameResponse.data.result,
+  });
+
+  //data:{ damages: number[]; result: number; }
+  return { status: 200, data: gameResponse.data as any };
+};
+
+export const updateGameService = async (
+  game: Game
+): Promise<Result<Game[]>> => {
+  const response = await useGameDbClient.updateGame(game);
   return { status: response.status, data: response.data };
 };
