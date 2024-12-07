@@ -41,8 +41,32 @@ export const getUserInfo = async (address: Address, chainId: ChainId) => {
       ],
     });
   console.log("ANS: ", { cash, health, attack, defense, potion, superPotion });
+
+  if (
+    !cash.result ||
+    !health.result ||
+    !attack.result ||
+    !defense.result ||
+    !potion.result ||
+    !superPotion.result
+  ) {
+    return {
+      status: 404,
+      data: {
+        message: "User not found",
+      },
+    };
+  }
+
   return {
     status: 200,
-    data: { cash, health, attack, defense, potion, superPotion },
+    data: {
+      cash: cash.result,
+      health: health.result,
+      attack: attack.result,
+      defense: defense.result,
+      potion: defense.result,
+      superPotion: superPotion.result,
+    },
   };
 };
