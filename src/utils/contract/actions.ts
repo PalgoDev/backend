@@ -6,7 +6,7 @@ export const mintTokens = async (
   chainId: ChainId,
   account: Address,
   tokenId: number,
-  amount: number
+  amount: number | string
 ) => {
   // console.log("PARAMS: ", account, tokenId, amount, chainId);
   const hash = await getUserItemsContract(chainId).write.mint([

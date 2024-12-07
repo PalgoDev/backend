@@ -15,6 +15,11 @@ if (process.env.NODE_ENV === "development") {
   dotenv.config();
 }
 
+//@ts-ignore
+BigInt.prototype.toJSON = function () {
+  return this.toString();
+};
+
 import express, { Express, Request, Response } from "express";
 import cors from "cors";
 

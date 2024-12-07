@@ -5,6 +5,7 @@ import {
   getUserService,
   updateUserService,
   getUsersFromParamsService,
+  getUserByEmailService,
 } from "../../services/User";
 import { Request } from "express";
 
@@ -68,3 +69,14 @@ export const getUsersFromParamsController = async (
     return { status: 400, data: e };
   }
 };
+
+// export const getUserByEmailController = async (
+//   req: Request
+// ): Promise<Result<User[] | string>> => {
+//   try {
+//     let input = req.query;
+//     return await getUserByEmailService(input.email);
+//   } catch (e: any) {
+//     return { status: 400, data: e };
+//   }
+// };

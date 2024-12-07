@@ -7,11 +7,11 @@ export const addressByChainId = {
 } as const;
 
 export enum USER_ITEM {
-    CASH = 0,
-    HEALTH = 1,
-    ATTACK = 2,
-    DEFENSE = 3,
+  CASH = 0,
+  HEALTH = 1,
+  ATTACK = 2,
+  DEFENSE = 3,
 
-    POTION = 4,
-    SUPER_POTION = 5,
+  POTION = 4,
+  SUPER_POTION = 5,
 }
