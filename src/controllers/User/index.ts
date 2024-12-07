@@ -4,6 +4,7 @@ import {
   getAllUserService,
   getUserService,
   updateUserService,
+  getUsersFromParamsService,
 } from "../../services/User";
 import { Request } from "express";
 
@@ -52,6 +53,17 @@ export const updateUserController = async (
   try {
     let input = req.body;
     return await updateUserService(input);
+  } catch (e: any) {
+    return { status: 400, data: e };
+  }
+};
+
+export const getUsersFromParamsController = async (
+  req: Request
+): Promise<Result<any[] | string>> => {
+  try {
+    let input = req.query;
+    return await getUsersFromParamsService(input);
   } catch (e: any) {
     return { status: 400, data: e };
   }

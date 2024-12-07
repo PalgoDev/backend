@@ -10,7 +10,7 @@ export const getUserInfo = async (address: Address, chainId: ChainId) => {
     ...contract,
     functionName: "balanceOf",
   };
-
+  console.log("PARAMS: ", address, chainId);
   const [cash, health, attack, defense, potion, superPotion] =
     await getPublicClient(chainId).multicall({
       contracts: [
@@ -40,13 +40,33 @@ export const getUserInfo = async (address: Address, chainId: ChainId) => {
         },
       ],
     });
+  // console.log("ANS: ", { cash, health, attack, defense, potion, superPotion });
+
+  if (
+    !cash.result ||
+    !health.result ||
+    !attack.result ||
+    !defense.result ||
+    !potion.result ||
+    !superPotion.result
+  ) {
+    return {
+      status: 404,
+      data: {
+        message: "User not found",
+      },
+    };
+  }
 
   return {
-    cash,
-    health,
-    attack,
-    defense,
-    potion,
-    superPotion,
+    status: 200,
+    data: {
+      cash: cash.result,
+      health: health.result,
+      attack: attack.result,
+      defense: defense.result,
+      potion: defense.result,
+      superPotion: superPotion.result,
+    },
   };
 };

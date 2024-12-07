@@ -1,12 +1,11 @@
 import { Result, createUser, User } from "../../models";
 import {
   mintTokensForUserService,
-  getTokenBalanceForUser,
+  getContractData,
 } from "../../services/Contract";
 import { Request } from "express";
 
 import dotenv from "dotenv";
-import { ChainId } from "config";
 dotenv.config();
 
 export const mintTokensForUserController = async (
@@ -25,14 +24,13 @@ export const mintTokensForUserController = async (
   }
 };
 
-export const getTokenBalanceForUserController = async (
+export const getContractDataController = async (
   req: Request
 ): Promise<Result<any[] | string>> => {
   try {
-    return await getTokenBalanceForUser(
+    return await getContractData(
       req.query.user_id as string,
-      req.query.chainId as any,
-      parseInt(req.query.token_id as string)
+      req.query.chainId as any
     );
   } catch (e: any) {
     return { status: 400, data: e };
