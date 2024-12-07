@@ -36,9 +36,11 @@ app.use(
 import { userRouter } from "../src/routes/User";
 import { mapboxRouter } from "../src/routes/Mapbox";
 import { entityRouter } from "../src/routes/Entity";
+import { gameRouter } from "../src/routes/Game";
 app.use("/user", userRouter);
 app.use("/mapbox", mapboxRouter);
 app.use("/entity", entityRouter);
+app.use("/game", gameRouter);
 
 // ========================================
 //                health check

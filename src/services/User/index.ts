@@ -17,3 +17,10 @@ export const getAllUserService = async (): Promise<Result<User[]>> => {
   const response = await useUserDbClient.getAll();
   return { status: response.status, data: response.data };
 };
+
+export const updateUserService = async (
+  user: User
+): Promise<Result<User[]>> => {
+  const response = await useUserDbClient.updateUser(user);
+  return { status: response.status, data: response.data };
+};

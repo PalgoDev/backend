@@ -13,3 +13,5 @@ userRouter.get("/:id", makeCallback(getUserController));
 userRouter.get("/", makeCallback(getAllUserController));
 
 userRouter.post("/", makeCallback(createUserController));
+
+userRouter.put("/", makeCallback(createUserController));
