@@ -8,6 +8,7 @@ export const EntitySchema = z.object({
   longitude_latitude: z.string(),
   place_name: z.string(),
   address: z.string(),
+  type: z.number(),
 });
 
 export type Entity = z.infer<typeof EntitySchema>;
@@ -19,5 +20,6 @@ export const createEntity = (entity: Entity) => {
     longitude_latitude: entity.longitude_latitude,
     place_name: entity.place_name,
     address: entity.address,
+    type: entity.type,
   });
 };

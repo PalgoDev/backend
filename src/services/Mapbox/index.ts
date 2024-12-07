@@ -74,6 +74,7 @@ export const getNearbyPlacesStorageService = async (
             longitude_latitude: placeKey,
             latitude: place.center[1],
             longitude: place.center[0],
+            type: 0,
           });
           visited.add(placeKey);
         }
