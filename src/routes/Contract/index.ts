@@ -3,10 +3,21 @@ import {
   mintTokensForUserController,
   getContractDataController,
   mintClaimOrbController,
+  burnTokensForUserController,
 } from "../../controllers/Contract";
 
 import express from "express";
 export const contractRouter = express.Router();
+
+contractRouter.post(
+  "/mintTokensForUser",
+  makeCallback(mintTokensForUserController)
+);
+
+contractRouter.post(
+  "/burnTokensForUser",
+  makeCallback(burnTokensForUserController)
+);
 
 contractRouter.post(
   "/mintTokensForUser",

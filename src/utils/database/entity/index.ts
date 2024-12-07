@@ -11,6 +11,7 @@ export const useEntityDb = (getDbClient: Function) => {
       }
       return response;
     } catch (e: any) {
+      console.log(e);
       return { status: 400, data: e.message };
     }
   }
@@ -31,6 +32,7 @@ export const useEntityDb = (getDbClient: Function) => {
       }
       return response;
     } catch (e: any) {
+      console.log(e);
       return { status: 400, data: e.message };
     }
   }
@@ -49,6 +51,7 @@ export const useEntityDb = (getDbClient: Function) => {
       }
       return response;
     } catch (e: any) {
+      console.log(e);
       return { status: 400, data: e.message };
     }
   }
@@ -77,6 +80,7 @@ export const useEntityDb = (getDbClient: Function) => {
       }
       return { status: 200, data: "Entities inserted successfully" };
     } catch (e: any) {
+      console.log(e);
       return { status: 400, data: e.message };
     }
   }
@@ -100,6 +104,7 @@ export const useEntityDb = (getDbClient: Function) => {
       console.log(`fetched ${response.data.length} entities`);
       return { status: 200, data: response.data };
     } catch (e: any) {
+      console.log(e);
       return { status: 400, data: e.message };
     }
   }
@@ -128,6 +133,7 @@ export const useEntityDb = (getDbClient: Function) => {
       console.log(`fetched ${response.data.length} entities`);
       return { status: 200, data: response.data };
     } catch (e: any) {
+      console.log(e);
       return { status: 400, data: e.message };
     }
   }

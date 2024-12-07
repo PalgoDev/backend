@@ -1,6 +1,14 @@
 import { Game, Result } from "../../models";
 import { useGameDbClient } from "../../utils/database";
 import { updateUserService } from "../User";
+import {
+  mintTokensForUserService,
+  burnTokensForUserService,
+} from "../Contract";
+import { USER_ITEM } from "../../config";
+import { min } from "lodash";
+import { parseEther } from "viem";
+import { mint } from "viem/chains";
 
 export const createGameService = async (
   game: Pick<Game, Exclude<keyof Game, "id">>
@@ -52,7 +60,16 @@ const simulate_fight = (player1, player2) => {
     result = 3;
   }
 
-  return { data: { damages, result } };
+  return {
+    data: {
+      damages,
+      result,
+      finalHealths: {
+        player1: Math.max(p1Health, 1),
+        player2: Math.max(p2Health, 1),
+      },
+    },
+  };
 };
 
 export const simulateGameService = async (
@@ -81,17 +98,64 @@ export const simulateGameService = async (
     health: player_2_health,
   };
   const gameResponse = simulate_fight(player1, player2);
+
+  //lower the users healths
+  await updateUserService({
+    ...response.data[0].player1,
+    health: gameResponse.data.finalHealths.player1,
+  });
+  await updateUserService({
+    ...response.data[0].player2,
+    health: gameResponse.data.finalHealths.player2,
+  });
+  burnTokensForUserService(
+    response.data[0].player1,
+    137,
+    USER_ITEM.HEALTH,
+    player1.health - gameResponse.data.finalHealths.player1
+  );
+  burnTokensForUserService(
+    response.data[0].player2,
+    137,
+    USER_ITEM.HEALTH,
+    player2.health - gameResponse.data.finalHealths.player2
+  );
+
   //update the user
   if (gameResponse.data.result === 1) {
     await updateUserService({
       ...response.data[0].player1,
       attack: player_1_attack + 1,
     });
+    await mintTokensForUserService(
+      response.data[0].player1.id,
+      137,
+      USER_ITEM.ATTACK,
+      1
+    );
+    await mintTokensForUserService(
+      response.data[0].player1.id,
+      137,
+      USER_ITEM.CASH,
+      parseEther("10").toString()
+    );
   } else if (gameResponse.data.result === 2) {
     await updateUserService({
       ...response.data[0].player2,
       attack: player_2_attack + 1,
     });
+    await mintTokensForUserService(
+      response.data[0].player2.id,
+      137,
+      USER_ITEM.ATTACK,
+      1
+    );
+    await mintTokensForUserService(
+      response.data[0].player2.id,
+      137,
+      USER_ITEM.CASH,
+      parseEther("10").toString()
+    );
   }
 
   //update the game

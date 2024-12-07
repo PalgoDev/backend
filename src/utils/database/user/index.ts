@@ -10,6 +10,7 @@ export const useUserDb = (getDbClient: Function) => {
       }
       return response;
     } catch (e: any) {
+      console.log(e);
       return { status: 400, data: e.message };
     }
   }
@@ -29,6 +30,7 @@ export const useUserDb = (getDbClient: Function) => {
       }
       return response;
     } catch (e: any) {
+      console.log(e);
       return { status: 400, data: e.message };
     }
   }
@@ -50,6 +52,7 @@ export const useUserDb = (getDbClient: Function) => {
       }
       return response;
     } catch (e: any) {
+      console.log(e);
       return { status: 400, data: e.message };
     }
   }
@@ -67,6 +70,7 @@ export const useUserDb = (getDbClient: Function) => {
       }
       return response;
     } catch (e: any) {
+      console.log(e);
       return { status: 400, data: e.message };
     }
   }
@@ -86,6 +90,7 @@ export const useUserDb = (getDbClient: Function) => {
       }
       return response;
     } catch (e: any) {
+      console.log(e);
       return { status: 400, data: e.message };
     }
   }
@@ -105,6 +110,7 @@ export const useUserDb = (getDbClient: Function) => {
       }
       return response;
     } catch (e: any) {
+      console.log(e);
       return { status: 400, data: e.message };
     }
   }

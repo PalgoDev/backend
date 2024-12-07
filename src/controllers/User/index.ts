@@ -18,8 +18,11 @@ export const createUserController = async (
   try {
     let input = req.body;
     const user = createUser(input);
-    return await createUserService(user);
+    const response = await createUserService(user);
+    console.log("RESPONSE", response);
+    return response;
   } catch (e: any) {
+    console.log(e);
     return { status: 400, data: e };
   }
 };
@@ -34,6 +37,7 @@ export const getUserController = async (
     }
     return await getUserService(user_id);
   } catch (e: any) {
+    console.log(e);
     return { status: 400, data: e };
   }
 };
@@ -44,6 +48,7 @@ export const getAllUserController = async (
   try {
     return await getAllUserService();
   } catch (e: any) {
+    console.log(e);
     return { status: 400, data: e };
   }
 };
@@ -55,6 +60,7 @@ export const updateUserController = async (
     let input = req.body;
     return await updateUserService(input);
   } catch (e: any) {
+    console.log(e);
     return { status: 400, data: e };
   }
 };
@@ -66,6 +72,7 @@ export const getUsersFromParamsController = async (
     let input = req.query;
     return await getUsersFromParamsService(input);
   } catch (e: any) {
+    console.log(e);
     return { status: 400, data: e };
   }
 };
@@ -77,6 +84,7 @@ export const getUsersFromParamsController = async (
 //     let input = req.query;
 //     return await getUserByEmailService(input.email);
 //   } catch (e: any) {
-//     return { status: 400, data: e };
+//     console.log(e)
+// return { status: 400, data: e };
 //   }
 // };

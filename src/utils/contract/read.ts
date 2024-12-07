@@ -65,7 +65,7 @@ export const getUserInfo = async (address: Address, chainId: ChainId) => {
       health: health.result,
       attack: attack.result,
       defense: defense.result,
-      potion: defense.result,
+      potion: potion.result,
       superPotion: superPotion.result,
     },
   };

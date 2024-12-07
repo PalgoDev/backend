@@ -2,6 +2,7 @@ import { Result, createUser, User } from "../../models";
 import {
   mintTokensForUserService,
   getContractData,
+  burnTokensForUserService,
 } from "../../services/Contract";
 import { getUsersFromParamsService } from "../../services/User";
 import { Request } from "express";
@@ -22,6 +23,24 @@ export const mintTokensForUserController = async (
       input.amount
     );
   } catch (e: any) {
+    console.log(e);
+    return { status: 400, data: e };
+  }
+};
+
+export const burnTokensForUserController = async (
+  req: Request
+): Promise<Result<any[] | string>> => {
+  try {
+    const input = req.body;
+    return await burnTokensForUserService(
+      input.user_id,
+      input.chainId,
+      input.tokenId,
+      input.amount
+    );
+  } catch (e: any) {
+    console.log(e);
     return { status: 400, data: e };
   }
 };
@@ -37,6 +56,7 @@ export const getContractDataController = async (
   } catch (e: any) {
     console.log(e);
     console.log("HERE");
+    console.log(e);
     return { status: 400, data: e };
   }
 };
@@ -48,6 +68,7 @@ export const mintClaimOrbController = async (
     const input = req.body;
     const user: any = await getUsersFromParamsService({ email: input.email });
     if (!user || user.status !== 200) {
+      console.log("USER NOT FOUND");
       return { status: 400, data: "User not found" };
     }
     await mintTokensForUserService(
@@ -61,6 +82,7 @@ export const mintClaimOrbController = async (
     await mintTokensForUserService(user.data[0].id, input.chainId, 3, 1);
     return { status: 200, data: "Tokens minted" };
   } catch (e: any) {
+    console.log(e);
     return { status: 400, data: e };
   }
 };
