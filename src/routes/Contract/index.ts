@@ -18,7 +18,4 @@ contractRouter.get(
   makeCallback(getTokenBalanceForUserController)
 );
 
-contractRouter.get(
-  "/contractData/:user_id/:chainId",
-  makeCallback(getContractDataController)
-);
+contractRouter.get("/contractData", makeCallback(getContractDataController));
