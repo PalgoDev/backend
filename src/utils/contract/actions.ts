@@ -29,16 +29,16 @@ export const mintTokens = async (
   return hash;
 };
 
-// export const burnTokens = async (
-//   chainId: ChainId,
-//   account: Address,
-//   tokenId: number,
-//   amount: number
-// ) => {
-//   const contract = getUserItemsContract(chainId);
-//   const hash = await contract.write.burn([account, tokenId, amount]);
-//   return "hash";
-// };
+export const burnTokens = async (
+  chainId: ChainId,
+  account: Address,
+  tokenId: number,
+  amount: number
+) => {
+  const contract = getUserItemsContract(chainId);
+  const hash = await contract.write.burn([account, tokenId, amount]);
+  return hash;
+};
 
 export const getTokenBalance = async (
   chainId: ChainId,

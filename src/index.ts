@@ -42,7 +42,7 @@ app.use("/user", userRouter);
 app.use("/mapbox", mapboxRouter);
 app.use("/entity", entityRouter);
 app.use("/game", gameRouter);
-// app.use("/contract", contractRouter);
+app.use("/contract", contractRouter);
 
 // ========================================
 //                health check

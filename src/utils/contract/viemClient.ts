@@ -17,14 +17,14 @@ export const getPublicClient = memoize((chainId: keyof typeof chainById) => {
   return client;
 });
 
-// export const getWalletClient = memoize((chainId: keyof typeof chainById) => {
-//   const account = privateKeyToAccount(
-//     (process.env.DEFAULT_PRIV_KEY as Hex) || ""
-//   );
-//   const client = createWalletClient({
-//     chain: chainById[chainId],
-//     transport: http(),
-//     account,
-//   });
-//   return client;
-// });
+export const getWalletClient = memoize((chainId: keyof typeof chainById) => {
+  const account = privateKeyToAccount(
+    (process.env.DEFAULT_PRIV_KEY as Hex) || ""
+  );
+  const client = createWalletClient({
+    chain: chainById[chainId],
+    transport: http(),
+    account,
+  });
+  return client;
+});
