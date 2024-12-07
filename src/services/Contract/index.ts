@@ -9,7 +9,7 @@ export async function mintTokensForUserService(
   user_id: string,
   chainId: ChainId,
   tokenId: number,
-  amount: number
+  amount: number | string
 ): Promise<Result<any[]>> {
   const user: any = await useUserDbClient.findById(user_id);
   if (!user || user.status !== 200) {

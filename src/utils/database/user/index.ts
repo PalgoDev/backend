@@ -90,11 +90,31 @@ export const useUserDb = (getDbClient: Function) => {
     }
   }
 
+  async function getUsersFromEmail(email: any): Promise<Result<any[]>> {
+    try {
+      const clientInstance = await getDbClient();
+      const response = await clientInstance
+        .from("User")
+        .select()
+        .match({ email: email });
+      if (response.error) {
+        return { status: response.status, data: response.error.message };
+      }
+      if (response.data.length === 0) {
+        return { status: 404, data: "User not Found" };
+      }
+      return response;
+    } catch (e: any) {
+      return { status: 400, data: e.message };
+    }
+  }
+
   return Object.freeze({
     getAll,
     findById,
     insertUser,
     updateUser,
     getUsersFromParams,
+    getUsersFromEmail,
   });
 };

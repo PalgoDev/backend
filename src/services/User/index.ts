@@ -31,3 +31,10 @@ export const getUsersFromParamsService = async (
   const response = await useUserDbClient.getUsersFromParams(searchParams);
   return { status: response.status, data: response.data };
 };
+
+export const getUserByEmailService = async (
+  email: string
+): Promise<Result<User[]>> => {
+  const response = await useUserDbClient.getUsersFromEmail(email);
+  return { status: response.status, data: response.data };
+};
