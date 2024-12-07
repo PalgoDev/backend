@@ -24,3 +24,10 @@ export const updateUserService = async (
   const response = await useUserDbClient.updateUser(user);
   return { status: response.status, data: response.data };
 };
+
+export const getUsersFromParamsService = async (
+  searchParams: any
+): Promise<Result<any[]>> => {
+  const response = await useUserDbClient.getUsersFromParams(searchParams);
+  return { status: response.status, data: response.data };
+};

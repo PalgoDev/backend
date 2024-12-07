@@ -10,7 +10,7 @@ export const getUserInfo = async (address: Address, chainId: ChainId) => {
     ...contract,
     functionName: "balanceOf",
   };
-
+  console.log("PARAMS: ", address, chainId);
   const [cash, health, attack, defense, potion, superPotion] =
     await getPublicClient(chainId).multicall({
       contracts: [
@@ -40,7 +40,7 @@ export const getUserInfo = async (address: Address, chainId: ChainId) => {
         },
       ],
     });
-  console.log("ANS: ", { cash, health, attack, defense, potion, superPotion });
+  // console.log("ANS: ", { cash, health, attack, defense, potion, superPotion });
 
   if (
     !cash.result ||
