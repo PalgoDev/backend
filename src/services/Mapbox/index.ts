@@ -3,22 +3,29 @@ import { Entity, createEntity, Result } from "../../models";
 import { useEntityDbClient } from "../../utils/database";
 
 const MAPBOX_ACCESS_TOKEN = process.env.MAPBOX_ACCESS_TOKEN;
+const entity_type_map = {
+  0: "restaurant",
+  1: "park",
+  2: "landmark",
+};
 
 export const getNearbyPlacesService = async (
   latitude,
   longitude,
-  radius = 1000
+  radius = 1000,
+  entity_type = 0
 ) => {
-  const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/restaurant.json`;
+  const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${entity_type_map[entity_type]}.json`;
   const params = {
     access_token: MAPBOX_ACCESS_TOKEN,
     proximity: `${longitude},${latitude}`,
     limit: 10,
     types: "poi",
-    radius: radius,
+    radius,
   };
 
   try {
+    console.log(`fetching ${entity_type_map[entity_type]}`);
     const response = await axios.get(url, { params });
     const entities = response.data.features.map((place: any) => {
       return {
@@ -39,7 +46,8 @@ export const getNearbyPlacesService = async (
 export const getNearbyPlacesStorageService = async (
   latitude: number,
   longitude: number,
-  bfs_depth = 3
+  bfs_depth = 3,
+  entity_type = 0
 ): Promise<Result<Entity[]>> => {
   const visited = new Set();
   const queue = [{ latitude, longitude }];
@@ -54,7 +62,7 @@ export const getNearbyPlacesStorageService = async (
     const key = `${longitude},${latitude}`;
     visited.add(key);
 
-    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/restaurant.json`;
+    const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/${entity_type_map[entity_type]}.json`;
     const params = {
       access_token: MAPBOX_ACCESS_TOKEN,
       proximity: key,
@@ -63,7 +71,12 @@ export const getNearbyPlacesStorageService = async (
     };
 
     try {
-      console.log("Fetching restaurants for: ", key, " for depth: ", depth);
+      console.log(
+        `Fetching ${entity_type_map[entity_type]} for:`,
+        key,
+        " for depth: ",
+        depth
+      );
       const response = await axios.get(url, { params });
       response.data.features.forEach((place: any) => {
         const placeKey = `${place.center[0]},${place.center[1]}`;
@@ -74,6 +87,7 @@ export const getNearbyPlacesStorageService = async (
             longitude_latitude: placeKey,
             latitude: place.center[1],
             longitude: place.center[0],
+            type: entity_type,
           });
           visited.add(placeKey);
         }
