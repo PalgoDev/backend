@@ -58,10 +58,21 @@ export const useEntityDb = (getDbClient: Function) => {
   ): Promise<Result<Entity[]>> {
     try {
       const clientInstance = await getDbClient();
-      const response = await clientInstance
-        .from("Entity")
-        .insert(entities, { onConflict: ["longitude_latitude"] });
+      const response = await clientInstance.from("Entity").upsert(entities, {
+        onConflict: ["longitude_latitude"],
+      });
       if (response.error) {
+        // Handle conflict error
+        if (response.error.code === "23505") {
+          // 23505 is the PostgreSQL error code for unique violation
+          console.warn(
+            "Conflict detected, some entities were not inserted due to duplicate longitude_latitude."
+          );
+          return {
+            status: 409,
+            data: "Conflict detected, some entities were not inserted due to duplicate longitude_latitude.",
+          };
+        }
         return { status: response.status, data: response.error.message };
       }
       return { status: 200, data: "Entities inserted successfully" };

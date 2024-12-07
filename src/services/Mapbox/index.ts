@@ -9,7 +9,6 @@ export const getNearbyPlacesService = async (
   longitude,
   radius = 1000
 ) => {
-  console.log("MAPBOX_ACCESS_TOKEN:", MAPBOX_ACCESS_TOKEN);
   const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/restaurant.json`;
   const params = {
     access_token: MAPBOX_ACCESS_TOKEN,
@@ -44,7 +43,6 @@ export const getNearbyPlacesStorageService = async (
     const { latitude, longitude }: any = queue.shift();
 
     const key = `${longitude},${latitude}`;
-    if (visited.has(key)) continue;
     visited.add(key);
 
     const url = `https://api.mapbox.com/geocoding/v5/mapbox.places/restaurant.json`;
@@ -56,10 +54,10 @@ export const getNearbyPlacesStorageService = async (
     };
 
     try {
-      console.log("Fetching restaurants for: ", key);
+      console.log("Fetching restaurants for: ", key, " for depth: ", depth);
       const response = await axios.get(url, { params });
       response.data.features.forEach((place: any) => {
-        const placeKey = `${place.center[1]},${place.center[0]}`;
+        const placeKey = `${place.center[0]},${place.center[1]}`;
         if (!visited.has(placeKey)) {
           places.push({
             place_name: place.place_name,
@@ -74,10 +72,22 @@ export const getNearbyPlacesStorageService = async (
 
       // Add neighboring points to the queue if queue has less than bfs_depth elements
       if (queue.length >= bfs_depth) continue;
-      queue.push({ latitude: latitude + latOffset, longitude });
-      queue.push({ latitude: latitude - latOffset, longitude });
-      queue.push({ latitude, longitude: longitude + lonOffset });
-      queue.push({ latitude, longitude: longitude - lonOffset });
+      if (!visited.has(`${longitude},${latitude + latOffset}`)) {
+        queue.push({ latitude: latitude + latOffset, longitude });
+        visited.add(`${longitude},${latitude + latOffset}`);
+      }
+      if (!visited.has(`${longitude},${latitude - latOffset}`)) {
+        queue.push({ latitude: latitude - latOffset, longitude });
+        visited.add(`${longitude},${latitude - latOffset}`);
+      }
+      if (!visited.has(`${longitude + lonOffset},${latitude}`)) {
+        queue.push({ latitude, longitude: longitude + lonOffset });
+        visited.add(`${longitude + lonOffset},${latitude}`);
+      }
+      if (!visited.has(`${longitude - lonOffset},${latitude}`)) {
+        queue.push({ latitude, longitude: longitude - lonOffset });
+        visited.add(`${longitude - lonOffset},${latitude}`);
+      }
     } catch (error) {
       console.error("Error fetching restaurants:", error);
     }
