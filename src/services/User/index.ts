@@ -1,10 +1,7 @@
 import { USER_ITEM } from "../../config";
 import { User, Result } from "../../models";
-import { useUserDbClient } from "../../utils/database";
-import {
-  mintTokensForUserService,
-  burnTokensForUserService,
-} from "../Contract";
+import { useLeaderBoardDbClient, useUserDbClient } from "../../utils/database";
+import { mintTokensForUserService } from "../Contract";
 import { parseEther } from "viem";
 
 export const createUserService = async (
@@ -12,6 +9,10 @@ export const createUserService = async (
 ): Promise<Result<User[]>> => {
   const response: any = await useUserDbClient.insertUser(user);
   const userRes = response.data[0];
+  await useLeaderBoardDbClient.insertLeaderBoard({
+    wallet_address: userRes.wallet_address,
+    email: userRes.email,
+  });
   await mintTokensForUserService(
     userRes.id as string,
     137,

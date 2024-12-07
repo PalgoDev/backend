@@ -4,6 +4,7 @@ import {
   createUserController,
   getAllUserController,
   getUsersFromParamsController,
+  updateUserController,
 } from "../../controllers/User";
 
 import express from "express";
@@ -15,6 +16,6 @@ userRouter.get("/", makeCallback(getAllUserController));
 
 userRouter.post("/", makeCallback(createUserController));
 
-userRouter.put("/", makeCallback(createUserController));
+userRouter.put("/", makeCallback(updateUserController));
 
 userRouter.get("/search/params", makeCallback(getUsersFromParamsController));

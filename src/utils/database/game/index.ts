@@ -64,6 +64,7 @@ export const useGameDb = (getDbClient: Function) => {
           player1:player_1_id (
             id,
             name,
+            email,
             health,
             attack,
             defense
@@ -71,6 +72,7 @@ export const useGameDb = (getDbClient: Function) => {
           player2:player_2_id (
             id,
             name,
+            email,
             health,
             attack,
             defense
