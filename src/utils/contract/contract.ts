@@ -3,10 +3,7 @@ import { abi } from "../../abis/UserItems.json";
 import { getWalletClient } from "./viemClient";
 import memoize from "lodash/memoize";
 import { getPublicClient } from "./viemClient";
-
-export const addressByChainId = {
-  137: "0x3365c64eB8416a8168d95b4c265651a6ebC51Cd1",
-} as const;
+import { addressByChainId } from "config";
 
 export const getUserItemsContract = memoize(
   (chainId: keyof typeof addressByChainId) =>
