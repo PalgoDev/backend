@@ -4,8 +4,8 @@ export type ChainId = (typeof SUPPORTED_CHAINS)[number];
 
 export const addressByChainId = {
   137: "0x8462c842D6e4249da988DBf7A7FCAbcfaeFCa733", //polygon
-  56: "0x0000000000000000000000000000000000000000", //bsc
-  8453: "0x0000000000000000000000000000000000000000", //base
+  56: "0x82001E29BEe0e110ae3EC7704e012DF84CB0dbFe", //bsc
+  8453: "0x82001E29BEe0e110ae3EC7704e012DF84CB0dbFe", //base
 } as const;
 
 export enum USER_ITEM {
