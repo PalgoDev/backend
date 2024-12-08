@@ -156,6 +156,7 @@ export const mintUsePotionController = async (
       console.log("USER NOT FOUND");
       return { status: 400, data: "User not found" };
     }
+    const user_res = user.data[0];
     if (input.is_super_potion) {
       const super_potion_res = await burnTokensForUserService(
         user.data[0].id,
@@ -171,6 +172,7 @@ export const mintUsePotionController = async (
         50
       );
       console.log("SUPER POTION HEALTH RES", super_potion_health_increase_res);
+      await updateUserService({ ...user_res, health: user_res.health + 50 });
     } else {
       const potion_res = await burnTokensForUserService(
         user.data[0].id,
@@ -186,6 +188,7 @@ export const mintUsePotionController = async (
         20
       );
       console.log("POTION HEALTH RES", potion_health_increase_res);
+      await updateUserService({ ...user_res, health: user_res.health + 20 });
     }
 
     return { status: 200, data: "Potions used" };
