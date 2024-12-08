@@ -5,7 +5,7 @@ import {
   mintTokensForUserService,
   burnTokensForUserService,
 } from "../Contract";
-import { USER_ITEM } from "../../config";
+import { ChainId, USER_ITEM } from "../../config";
 import { min } from "lodash";
 import { parseEther } from "viem";
 import { mint } from "viem/chains";
@@ -77,7 +77,8 @@ const simulate_fight = (player1, player2) => {
 };
 
 export const simulateGameService = async (
-  id: string
+  id: string,
+  chainId: string
 ): Promise<Result<any[]>> => {
   const response: any = await useGameDbClient.findDetailGameInfoById(id);
   if (response.status === 404) {
@@ -113,15 +114,15 @@ export const simulateGameService = async (
     health: gameResponse.data.finalHealths.player2,
   });
   const player1_burned_health_res = await burnTokensForUserService(
-    response.data[0].player1,
-    137,
+    response.data[0].player1.id,
+    chainId as any,
     USER_ITEM.HEALTH,
     player1.health - gameResponse.data.finalHealths.player1
   );
   console.log("player1_burned_health_res", player1_burned_health_res);
   const player2_burned_health_res = await burnTokensForUserService(
-    response.data[0].player2,
-    137,
+    response.data[0].player2.id,
+    chainId as any,
     USER_ITEM.HEALTH,
     player2.health - gameResponse.data.finalHealths.player2
   );
@@ -150,14 +151,14 @@ export const simulateGameService = async (
     });
     const player1_attack_increase_res = await mintTokensForUserService(
       response.data[0].player1.id,
-      137,
+      chainId as any,
       USER_ITEM.ATTACK,
       1
     );
     console.log("player1_attack_increase_res", player1_attack_increase_res);
     const player1_cash_increase = await mintTokensForUserService(
       response.data[0].player1.id,
-      137,
+      chainId as any,
       USER_ITEM.CASH,
       parseEther("10").toString()
     );
@@ -177,14 +178,14 @@ export const simulateGameService = async (
     });
     const player2_attack_increase_res = await mintTokensForUserService(
       response.data[0].player2.id,
-      137,
+      chainId as any,
       USER_ITEM.ATTACK,
       1
     );
     console.log("player2_attack_increase_res", player2_attack_increase_res);
     const player2_cash_increase_res = await mintTokensForUserService(
       response.data[0].player2.id,
-      137,
+      chainId as any,
       USER_ITEM.CASH,
       parseEther("10").toString()
     );

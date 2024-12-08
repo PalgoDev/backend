@@ -16,9 +16,11 @@ export const createUserController = async (
   req: Request
 ): Promise<Result<User[] | string>> => {
   try {
-    let input = req.body;
+    const input = { ...req.body };
+    const chainId = input.chainId;
+    delete input.chainId;
     const user = createUser(input);
-    const response = await createUserService(user);
+    const response = await createUserService(user, chainId);
     console.log("RESPONSE", response);
     return response;
   } catch (e: any) {

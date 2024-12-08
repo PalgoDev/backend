@@ -60,7 +60,7 @@ export const simulateGameController = async (
       throw Error("No/Invalid game_id found. game_id:" + game_id);
     }
 
-    return await simulateGameService(game_id);
+    return await simulateGameService(game_id, req.params?.chainId);
   } catch (e: any) {
     console.log(e);
     return { status: 400, data: e };
@@ -77,7 +77,10 @@ export const createAndSimulateGameController = async (
     if (gameResponse.status != 201) {
       return gameResponse;
     }
-    return await simulateGameService(gameResponse.data[0].id as string);
+    return await simulateGameService(
+      gameResponse.data[0].id as string,
+      input.chainId
+    );
   } catch (e: any) {
     console.log(e);
     return { status: 400, data: e };

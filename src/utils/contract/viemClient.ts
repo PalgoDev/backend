@@ -4,9 +4,9 @@ import memoize from "lodash/memoize";
 import { privateKeyToAccount } from "viem/accounts";
 
 const chainById = {
-  [bsc.id]: bsc,
+  [bsc.id]: bsc, //56
   [polygon.id]: polygon, //137
-  [base.id]: base,
+  [base.id]: base, //8453
 };
 
 export const getPublicClient = memoize((chainId: keyof typeof chainById) => {

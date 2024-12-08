@@ -5,7 +5,8 @@ import { mintTokensForUserService } from "../Contract";
 import { parseEther } from "viem";
 
 export const createUserService = async (
-  user: Pick<User, Exclude<keyof User, "id">>
+  user: Pick<User, Exclude<keyof User, "id">>,
+  chainId: string
 ): Promise<Result<User[]>> => {
   const response: any = await useUserDbClient.insertUser(user);
   const userRes = response.data[0];
@@ -15,28 +16,28 @@ export const createUserService = async (
   });
   const health_res = await mintTokensForUserService(
     userRes.id as string,
-    137,
+    chainId as any,
     USER_ITEM.HEALTH,
     userRes.health
   );
   console.log("HEALTH RES", health_res);
   const attack_increase = await mintTokensForUserService(
     userRes.id as string,
-    137,
+    chainId as any,
     USER_ITEM.ATTACK,
     userRes.attack
   );
   console.log("ATTACK RES", attack_increase);
   const defense_increase = await mintTokensForUserService(
     userRes.id as string,
-    137,
+    chainId as any,
     USER_ITEM.DEFENSE,
     userRes.defense
   );
   console.log("DEFENSE RES", defense_increase);
   const cash_increase = await mintTokensForUserService(
     userRes.id as string,
-    137,
+    chainId as any,
     USER_ITEM.CASH,
     parseEther("100").toString()
   );
