@@ -3,7 +3,7 @@ export const SUPPORTED_CHAINS = [137] as const;
 export type ChainId = (typeof SUPPORTED_CHAINS)[number];
 
 export const addressByChainId = {
-  137: "0x15E4e0aB1C971d002486BE09BE010dE4D83EA367",
+  137: "0x8462c842D6e4249da988DBf7A7FCAbcfaeFCa733",
 } as const;
 
 export enum USER_ITEM {
