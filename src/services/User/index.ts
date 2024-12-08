@@ -13,30 +13,34 @@ export const createUserService = async (
     wallet_address: userRes.wallet_address,
     email: userRes.email,
   });
-  await mintTokensForUserService(
+  const health_res = await mintTokensForUserService(
     userRes.id as string,
     137,
     USER_ITEM.HEALTH,
     userRes.health
   );
-  await mintTokensForUserService(
+  console.log("HEALTH RES", health_res);
+  const attack_increase = await mintTokensForUserService(
     userRes.id as string,
     137,
     USER_ITEM.ATTACK,
     userRes.attack
   );
-  await mintTokensForUserService(
+  console.log("ATTACK RES", attack_increase);
+  const defense_increase = await mintTokensForUserService(
     userRes.id as string,
     137,
     USER_ITEM.DEFENSE,
     userRes.defense
   );
-  await mintTokensForUserService(
+  console.log("DEFENSE RES", defense_increase);
+  const cash_increase = await mintTokensForUserService(
     userRes.id as string,
     137,
     USER_ITEM.CASH,
     parseEther("100").toString()
   );
+  console.log("CASH RES", cash_increase);
   return { status: response.status, data: response.data };
 };
 

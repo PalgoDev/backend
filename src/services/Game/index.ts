@@ -112,18 +112,20 @@ export const simulateGameService = async (
     ...response.data[0].player2,
     health: gameResponse.data.finalHealths.player2,
   });
-  burnTokensForUserService(
+  const player1_burned_health_res = await burnTokensForUserService(
     response.data[0].player1,
     137,
     USER_ITEM.HEALTH,
     player1.health - gameResponse.data.finalHealths.player1
   );
-  burnTokensForUserService(
+  console.log("player1_burned_health_res", player1_burned_health_res);
+  const player2_burned_health_res = await burnTokensForUserService(
     response.data[0].player2,
     137,
     USER_ITEM.HEALTH,
     player2.health - gameResponse.data.finalHealths.player2
   );
+  console.log("player2_burned_health_res", player2_burned_health_res);
 
   const leaderBoard1 = await getLeaderBoardsFromParamsService({
     email: response.data[0].player1.email,
@@ -146,18 +148,20 @@ export const simulateGameService = async (
       ...leaderBoard2.data[0],
       losses: leaderBoard2.data[0].losses + 1,
     });
-    await mintTokensForUserService(
+    const player1_attack_increase_res = await mintTokensForUserService(
       response.data[0].player1.id,
       137,
       USER_ITEM.ATTACK,
       1
     );
-    await mintTokensForUserService(
+    console.log("player1_attack_increase_res", player1_attack_increase_res);
+    const player1_cash_increase = await mintTokensForUserService(
       response.data[0].player1.id,
       137,
       USER_ITEM.CASH,
       parseEther("10").toString()
     );
+    console.log("player1_cash_increase", player1_cash_increase);
   } else if (gameResponse.data.result === 2) {
     await updateUserService({
       ...response.data[0].player2,
@@ -171,18 +175,20 @@ export const simulateGameService = async (
       ...leaderBoard1.data[0],
       losses: leaderBoard1.data[0].losses + 1,
     });
-    await mintTokensForUserService(
+    const player2_attack_increase_res = await mintTokensForUserService(
       response.data[0].player2.id,
       137,
       USER_ITEM.ATTACK,
       1
     );
-    await mintTokensForUserService(
+    console.log("player2_attack_increase_res", player2_attack_increase_res);
+    const player2_cash_increase_res = await mintTokensForUserService(
       response.data[0].player2.id,
       137,
       USER_ITEM.CASH,
       parseEther("10").toString()
     );
+    console.log("player2_cash_increase_res", player2_cash_increase_res);
   }
 
   //update the game
