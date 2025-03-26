@@ -6,10 +6,11 @@ export const useEntityDb = (getDbClient: Function) => {
       const clientInstance = await getDbClient();
 
       const response = await clientInstance.from("Entity").select();
-      if (response.error) {
-        return { status: response.status, data: response.error.message };
+      if (response) {
+        return { status: 500, data: "Error fetching entities" };
+      } else {
+        return { status: 200, data: response.data };
       }
-      return response;
     } catch (e: any) {
       console.log(e);
       return { status: 400, data: e.message };
@@ -18,7 +19,7 @@ export const useEntityDb = (getDbClient: Function) => {
 
   async function findById(id: string): Promise<Result<Entity[]>> {
     try {
-      const clientInstance = await getDbClient();
+      const clientInstance = await getDbClient;
 
       const response = await clientInstance
         .from("Entity")
